@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nettoyage Liste A</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="eyebrow">Nettoyage de liste</div>
+    <h1>Supprimez de <em>Liste A</em><br>ce qui est déjà dans <em>Liste B</em>.</h1>
+    <p class="lede">
+      Correspondance <b>sensible à la casse</b>. Chaque occurrence de la Liste B retire
+      <b>une seule</b> occurrence identique dans la Liste A. Formats acceptés :
+      <kbd>.txt</kbd> <kbd>.csv</kbd>.
+    </p>
+  </header>
+
+  <!-- Grille A / B -->
+  <div class="grid">
+
+    <!-- Panneau A -->
+    <section class="panel">
+      <div class="panel-head">
+        <span class="panel-tag a">A</span>
+        <span class="panel-title">Liste à nettoyer</span>
+        <span class="panel-count" id="countA">0</span>
+      </div>
+
+      <div class="file-info" id="infoA">
+        <span class="file-dot"></span>
+        <span class="file-name" id="nameA"></span>
+        <span class="file-count" id="linesA"></span>
+        <button class="btn-x" id="clearA" type="button" title="Retirer">✕</button>
+      </div>
+
+      <label class="drop" id="dropA">
+        <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        <div class="drop-title">Déposez la Liste A</div>
+        <div class="drop-hint">ou cliquez pour choisir un <b>.txt</b> ou <b>.csv</b></div>
+        <input type="file" id="fileA" class="hidden-input" accept=".txt,.csv,text/plain,text/csv">
+      </label>
+
+      <div class="preview" id="previewA" style="margin-top:14px"><span class="empty">Aucun fichier chargé.</span></div>
+    </section>
+
+    <!-- Panneau B -->
+    <section class="panel">
+      <div class="panel-head">
+        <span class="panel-tag b">B</span>
+        <span class="panel-title">Liste de référence</span>
+        <span class="panel-count" id="countB">0</span>
+      </div>
+
+      <div class="file-info" id="infoB">
+        <span class="file-dot" style="background:var(--danger);box-shadow:0 0 8px var(--danger)"></span>
+        <span class="file-name" id="nameB"></span>
+        <span class="file-count" id="linesB"></span>
+        <button class="btn-x" id="clearB" type="button" title="Retirer">✕</button>
+      </div>
+
+      <label class="drop" id="dropB">
+        <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:var(--danger);opacity:.75">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        <div class="drop-title">Déposez la Liste B</div>
+        <div class="drop-hint">ou cliquez pour choisir un <b>.txt</b> ou <b>.csv</b></div>
+        <input type="file" id="fileB" class="hidden-input" accept=".txt,.csv,text/plain,text/csv">
+      </label>
+
+      <div class="preview" id="previewB" style="margin-top:14px"><span class="empty">Aucun fichier chargé.</span></div>
+    </section>
+  </div>
+
+  <!-- Actions -->
+  <div class="actions">
+    <button class="btn-primary" id="runBtn" disabled>Traiter les listes</button>
+    <button class="btn-ghost" id="resetBtn" disabled>Réinitialiser</button>
+  </div>
+
+  <!-- Résultat -->
+  <section class="result" id="resultCard">
+    <div class="result-head">
+      <span class="result-head-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </span>
+      <h2>Liste A nettoyée</h2>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">Liste A initiale</div>
+        <div class="stat-value" id="statInit">0</div>
+      </div>
+      <div class="stat removed">
+        <div class="stat-label">Supprimées</div>
+        <div class="stat-value" id="statRemoved">0</div>
+      </div>
+      <div class="stat kept">
+        <div class="stat-label">Restantes</div>
+        <div class="stat-value" id="statKept">0</div>
+      </div>
+    </div>
+
+    <div class="result-actions">
+      <button class="btn-primary" id="downloadBtn">Télécharger le .txt</button>
+    </div>
+
+    <div class="preview" id="previewResult"></div>
+  </section>
+
+  <p class="footnote">
+    Le fichier téléchargé contient la <b>Liste A filtrée</b>, une ligne par entrée, dans l'ordre d'origine.<br>
+    Tout est traité <b>localement dans votre navigateur</b> — aucune donnée n'est envoyée.
+  </p>
+  <p class="footnote">&copy;2026 <b>Archalian</b>, v1.0.0 beta</p>
+</div>
+
+<script href="script.js"></script>
+</body>
+</html>
