@@ -49,5 +49,3 @@ Testé sur Chrome, Firefox, Safari (macOS) et Edge.
 - Un seul fichier : `index.html`.
 - Lecture des fichiers via `FileReader` (compatibilité Safari/macOS).
 - Design sombre avec teal comme couleur principale.
-
-## Structure
