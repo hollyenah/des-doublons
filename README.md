@@ -1,4 +1,6 @@
-# Nettoyage Liste A
+# des-doublons
+
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/hollyenah/des-doublons?color=blue&label=version)
 
 Petite web app **100 % locale** (un seul fichier `index.html`) pour nettoyer une liste A en supprimant les entrées déjà présentes dans une liste B.
 
