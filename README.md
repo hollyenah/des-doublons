@@ -4,6 +4,10 @@
 
 Petite web app **100 % locale** (un seul fichier `index.html`) pour nettoyer une liste A en supprimant les entrées déjà présentes dans une liste B.
 
+## Screenshoot
+
+<img width="963" height="593" alt="image" src="https://github.com/user-attachments/assets/2dbcd115-d23a-43e6-9f5c-7f6bf45f8f40" />
+
 ## Principe
 
 Pour chaque ligne de la **Liste B**, une **seule** occurrence correspondante est retirée de la **Liste A**.
