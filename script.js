@@ -123,8 +123,72 @@ function readFileAsText(file) {
   });
 }
 
+  /* .xlsx : archive zip lue avec les API natives (aucune dépendance) */
+  async function unzip(buf) {
+    const v = new DataView(buf);
+    let eocd = buf.byteLength - 22;
+    while (eocd >= 0 && v.getUint32(eocd, true) !== 0x06054b50) eocd--;
+    if (eocd < 0) throw new Error('Fichier .xlsx invalide ou protégé par mot de passe');
+    // shortcut: pas de Zip64 (fichiers > 4 Go), à ajouter si besoin
+    const entries = {};
+    let p = v.getUint32(eocd + 16, true);
+    for (let n = v.getUint16(eocd + 10, true); n > 0; n--) {
+      const nameLen = v.getUint16(p + 28, true);
+      const local = v.getUint32(p + 42, true);
+      const name = new TextDecoder().decode(new Uint8Array(buf, p + 46, nameLen));
+      const start = local + 30 + v.getUint16(local + 26, true) + v.getUint16(local + 28, true);
+      entries[name] = { method: v.getUint16(p + 10, true), data: new Uint8Array(buf, start, v.getUint32(p + 20, true)) };
+      p += 46 + nameLen + v.getUint16(p + 30, true) + v.getUint16(p + 32, true);
+    }
+    return async path => {
+      const e = entries[path];
+      if (!e) return null;
+      const text = e.method === 0
+        ? new TextDecoder().decode(e.data)
+        : await new Response(new Blob([e.data]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).text();
+      return new DOMParser().parseFromString(text, 'application/xml');
+    };
+  }
+
+  // shortcut: lit les valeurs brutes (dates = numéro de série, nombres non formatés), première feuille uniquement
+  async function parseXlsx(buf) {
+    const read = await unzip(buf);
+    const all = (node, tag) => [...node.getElementsByTagNameNS('*', tag)];
+    const wb = await read('xl/workbook.xml');
+    const rels = await read('xl/_rels/workbook.xml.rels');
+    if (!wb || !rels) throw new Error('Fichier .xlsx invalide');
+
+    const target = match => {
+      const r = all(rels, 'Relationship').find(match);
+      if (!r) return null;
+      const t = r.getAttribute('Target');
+      return t.startsWith('/') ? t.slice(1) : 'xl/' + t;
+    };
+    const first = all(wb, 'sheet')[0];
+    const rid = first && first.getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships', 'id');
+    const sheetPath = target(r => r.getAttribute('Id') === rid);
+    const stringsPath = target(r => /\/sharedStrings$/.test(r.getAttribute('Type')));
+
+    const sheet = sheetPath && await read(sheetPath);
+    if (!sheet) throw new Error('Feuille introuvable dans le .xlsx');
+    const ss = stringsPath && await read(stringsPath);
+    // Texte enrichi = plusieurs <t> par chaîne ; <rPh> = annotations phonétiques à ignorer
+    const textOf = node => all(node, 't').filter(t => t.parentNode.localName !== 'rPh').map(t => t.textContent).join('');
+    const strings = ss ? all(ss, 'si').map(textOf) : [];
+
+    const rows = all(sheet, 'row').map(row => all(row, 'c').map(c => {
+      const type = c.getAttribute('t');
+      if (type === 'inlineStr') return textOf(c);
+      const val = all(c, 'v')[0];
+      if (!val) return '';
+      return type === 's' ? strings[+val.textContent] : val.textContent;
+    }));
+    return rowsToLines(rows);
+  }
+
 async function readFile(file) {
   const name = (file.name || '').toLowerCase();
+  if (name.endsWith('.xlsx')) return parseXlsx(await file.arrayBuffer());
   const text = await readFileAsText(file);
   if (name.endsWith('.csv')) return parseCsv(text);
   if (name.endsWith('.txt') || name === '') return parseTxt(text);

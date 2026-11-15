@@ -17,7 +17,7 @@
     <p class="lede">
       Correspondance <b>sensible à la casse</b>. Chaque occurrence de la Liste B retire
       <b>une seule</b> occurrence identique dans la Liste A. Formats acceptés :
-      <kbd>.txt</kbd> <kbd>.csv</kbd>.
+      <kbd>.txt</kbd> <kbd>.csv</kbd> <kbd>.xlsx</kbd>.
     </p>
   </header>
 
@@ -46,8 +46,8 @@
           <line x1="12" y1="3" x2="12" y2="15"/>
         </svg>
         <div class="drop-title">Déposez la Liste A</div>
-        <div class="drop-hint">ou cliquez pour choisir un <b>.txt</b> ou <b>.csv</b></div>
-        <input type="file" id="fileA" class="hidden-input" accept=".txt,.csv,text/plain,text/csv">
+        <div class="drop-hint">ou cliquez pour choisir un <b>.txt</b>, <b>.csv</b> ou <b>.xlsx</b></div>
+        <input type="file" id="fileA" class="hidden-input" accept=".txt,.csv,.xlsx,text/plain,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
       </label>
 
       <div class="preview" id="previewA" style="margin-top:14px"><span class="empty">Aucun fichier chargé.</span></div>
@@ -75,8 +75,8 @@
           <line x1="12" y1="3" x2="12" y2="15"/>
         </svg>
         <div class="drop-title">Déposez la Liste B</div>
-        <div class="drop-hint">ou cliquez pour choisir un <b>.txt</b> ou <b>.csv</b></div>
-        <input type="file" id="fileB" class="hidden-input" accept=".txt,.csv,text/plain,text/csv">
+        <div class="drop-hint">ou cliquez pour choisir un <b>.txt</b>, <b>.csv</b> ou <b>.xlsx</b></div>
+        <input type="file" id="fileB" class="hidden-input" accept=".txt,.csv,.xlsx,text/plain,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
       </label>
 
       <div class="preview" id="previewB" style="margin-top:14px"><span class="empty">Aucun fichier chargé.</span></div>
@@ -126,9 +126,9 @@
     Le fichier téléchargé contient la <b>Liste A filtrée</b>, une ligne par entrée, dans l'ordre d'origine.<br>
     Tout est traité <b>localement dans votre navigateur</b> — aucune donnée n'est envoyée.
   </p>
-  <p class="footnote">&copy;2026 <b>Archalian</b>, v1.0.0 beta</p>
+  <p class="footnote">&copy;2026 <b>Archalian</b>, v1.1.0 beta</p>
 </div>
 
-<script href="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

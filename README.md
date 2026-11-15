@@ -28,8 +28,9 @@ Pour chaque ligne de la **Liste B**, une **seule** occurrence correspondante est
 
 - `.txt` — une entrée par ligne
 - `.csv` — séparateur `,`, `;` ou tabulation (détecté automatiquement) ; les cellules d'une même ligne sont jointes avec ` → `
+- `.xlsx` — **première feuille** uniquement, mêmes règles que le `.csv` ; les valeurs sont lues brutes (une date devient son numéro de série Excel, un nombre n'a pas son format d'affichage)
 
-> Les fichiers `.xlsx` ne sont **pas** supportés (volontairement).
+> Les anciens fichiers `.xls` et les classeurs protégés par mot de passe ne sont pas supportés.
 
 ## Utilisation
 
@@ -48,6 +49,7 @@ Tout le traitement se fait **dans le navigateur**. Aucune donnée n'est envoyée
 ## Compatibilité
 
 Testé sur Chrome, Firefox, Safari (macOS) et Edge.
+La lecture des `.xlsx` demande Safari 16.4+, Chrome 103+, Firefox 113+ ou Edge 103+.
 
 ## Technique
 
